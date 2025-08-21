@@ -1,0 +1,41 @@
+const express = require("express")
+const mysql = require("mysql2")
+const cors = require("cors")
+const bodyParser = require("body-parser")
+
+const app = express()
+const PORT = 5000
+
+const path = require("path")
+app.use(express.static(path.join(__dirname, "../frontend")))
+
+app.use(cors())
+app.use(bodyParser.json())
+
+const db = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password : "",
+    database: "portfolio_db"
+});
+
+db.connect(err => {
+    if(err) throw err;
+    console.log("MySQL Connected...")
+});
+
+app.post("/contact", (req, res)=>{
+    const { name, email, message } = req.body
+    if(!name || !email || !message){
+        return res.status(400).json({ message: "All fields are required"})
+    }
+
+    const sql = "INSERT INTO contacts (name, email, message) VALUES (?, ?, ?)";
+    db.query(sql, [name, email, message], (err, result)=>{
+        res.json({ message: "Message recieved successfully!"})
+    })
+})
+
+app.listen(PORT, ()=> {
+    console.log(`Server running on http://localhost:${PORT}`)
+})
