@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
       }
 
       try {
-        const response = await fetch("http://localhost:5000/contact",{
+        const response = await fetch("https://portfolio-harshita-sharma.vercel.app/",{
           method: "POST",
           headers: {"Content-Type": "application/json"},
           body: JSON.stringify(formData)
