@@ -7,7 +7,7 @@ const app = express()
 const PORT = 5000
 
 const path = require("path")
-app.use(express.static(path.join(__dirname, "../frontend")))
+app.use(express.static(path.join(__dirname, "../frontend/index.html")))
 
 app.use(cors())
 app.use(bodyParser.json())
