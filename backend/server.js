@@ -7,7 +7,10 @@ const app = express()
 const PORT = 5000
 
 const path = require("path")
-app.use(express.static(path.join(__dirname, "../frontend/index.html")))
+app.use(express.static(path.join(__dirname, "../frontend")))
+app.get("/", (req, res)=> {
+    res.sendFile(path.join(__dirname, "../frontend/index.html"))
+})
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -32,10 +35,14 @@ app.post("/contact", (req, res)=>{
 
     const sql = "INSERT INTO contacts (name, email, message) VALUES (?, ?, ?)";
     db.query(sql, [name, email, message], (err, result)=>{
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: "Database error" })
+        }        
         res.json({ message: "Message recieved successfully!"})
     })
 })
 
 app.listen(PORT, ()=> {
-    console.log(`Server running on https://portfolio-harshita-sharma.vercel.app/`)
+    console.log(`Server running on http://localhost:${PORT}`)
 })
